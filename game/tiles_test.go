@@ -9,78 +9,18 @@ func TestFlatten(t *testing.T) {
 		expected []Tile
 		changed  bool
 	}{
-		{
-			name:     "Long shift",
-			start:    []Tile{NewTile(2), NewTile(0), NewTile(0), NewTile(0)},
-			expected: []Tile{NewTile(0), NewTile(0), NewTile(0), NewTile(2)},
-			changed:  true,
-		},
-		{
-			name:     "Long shift add",
-			start:    []Tile{NewTile(2), NewTile(0), NewTile(0), NewTile(2)},
-			expected: []Tile{NewTile(0), NewTile(0), NewTile(0), NewTile(4)},
-			changed:  true,
-		},
-		{
-			name:     "Long shift no add",
-			start:    []Tile{NewTile(4), NewTile(0), NewTile(0), NewTile(2)},
-			expected: []Tile{NewTile(0), NewTile(0), NewTile(4), NewTile(2)},
-			changed:  true,
-		},
-		{
-			name:     "Short shift",
-			start:    []Tile{NewTile(0), NewTile(0), NewTile(2), NewTile(0)},
-			expected: []Tile{NewTile(0), NewTile(0), NewTile(0), NewTile(2)},
-			changed:  true,
-		},
-		{
-			name:     "Short shift no add",
-			start:    []Tile{NewTile(0), NewTile(4), NewTile(0), NewTile(2)},
-			expected: []Tile{NewTile(0), NewTile(0), NewTile(4), NewTile(2)},
-			changed:  true,
-		},
-		{
-			name:     "Short shift add",
-			start:    []Tile{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-			expected: []Tile{NewTile(0), NewTile(0), NewTile(0), NewTile(4)},
-			changed:  true,
-		},
-		{
-			name:     "add and shift",
-			start:    []Tile{NewTile(2), NewTile(2), NewTile(0), NewTile(0)},
-			expected: []Tile{NewTile(0), NewTile(0), NewTile(0), NewTile(4)},
-			changed:  true,
-		},
-		{
-			name:     "double shift no add",
-			start:    []Tile{NewTile(2), NewTile(4), NewTile(0), NewTile(0)},
-			expected: []Tile{NewTile(0), NewTile(0), NewTile(2), NewTile(4)},
-			changed:  true,
-		},
-		{
-			name:     "shift and add",
-			start:    []Tile{NewTile(2), NewTile(2), NewTile(2), NewTile(2)},
-			expected: []Tile{NewTile(0), NewTile(0), NewTile(4), NewTile(4)},
-			changed:  true,
-		},
-		{
-			name:     "shift add and not add",
-			start:    []Tile{NewTile(2), NewTile(4), NewTile(2), NewTile(2)},
-			expected: []Tile{NewTile(0), NewTile(2), NewTile(4), NewTile(4)},
-			changed:  true,
-		},
-		{
-			name:     "shift no change",
-			start:    []Tile{NewTile(0), NewTile(0), NewTile(0), NewTile(2)},
-			expected: []Tile{NewTile(0), NewTile(0), NewTile(0), NewTile(2)},
-			changed:  false,
-		},
-		{
-			name:     "full tile shift change on the right first",
-			start:    []Tile{NewTile(2), NewTile(2), NewTile(2), NewTile(32)},
-			expected: []Tile{NewTile(0), NewTile(2), NewTile(4), NewTile(32)},
-			changed:  true,
-		},
+		{"Long shift", []Tile{Tile(2), Tile(0), Tile(0), Tile(0)}, []Tile{Tile(0), Tile(0), Tile(0), Tile(2)}, true},
+		{"Long shift add", []Tile{Tile(2), Tile(0), Tile(0), Tile(2)}, []Tile{Tile(0), Tile(0), Tile(0), Tile(4)}, true},
+		{"Long shift no add", []Tile{Tile(4), Tile(0), Tile(0), Tile(2)}, []Tile{Tile(0), Tile(0), Tile(4), Tile(2)}, true},
+		{"Short shift", []Tile{Tile(0), Tile(0), Tile(2), Tile(0)}, []Tile{Tile(0), Tile(0), Tile(0), Tile(2)}, true},
+		{"Short shift no add", []Tile{Tile(0), Tile(4), Tile(0), Tile(2)}, []Tile{Tile(0), Tile(0), Tile(4), Tile(2)}, true},
+		{"Short shift add", []Tile{Tile(0), Tile(0), Tile(2), Tile(2)}, []Tile{Tile(0), Tile(0), Tile(0), Tile(4)}, true},
+		{"add and shift", []Tile{Tile(2), Tile(2), Tile(0), Tile(0)}, []Tile{Tile(0), Tile(0), Tile(0), Tile(4)}, true},
+		{"double shift no add", []Tile{Tile(2), Tile(4), Tile(0), Tile(0)}, []Tile{Tile(0), Tile(0), Tile(2), Tile(4)}, true},
+		{"shift and add", []Tile{Tile(2), Tile(2), Tile(2), Tile(2)}, []Tile{Tile(0), Tile(0), Tile(4), Tile(4)}, true},
+		{"shift add and not add", []Tile{Tile(2), Tile(4), Tile(2), Tile(2)}, []Tile{Tile(0), Tile(2), Tile(4), Tile(4)}, true},
+		{"shift no change", []Tile{Tile(0), Tile(0), Tile(0), Tile(2)}, []Tile{Tile(0), Tile(0), Tile(0), Tile(2)}, false},
+		{"full tile shift change on the right first", []Tile{Tile(2), Tile(2), Tile(2), Tile(32)}, []Tile{Tile(0), Tile(2), Tile(4), Tile(32)}, true},
 	}
 
 	for _, tt := range cases {
@@ -97,7 +37,7 @@ func TestFlatten(t *testing.T) {
 			}
 
 			for i, e := range tt.expected {
-				if e.Value != shifted[i].Value {
+				if e != shifted[i] {
 					t.Errorf("expected %v, but got %v index:%d", e, shifted[i], i)
 				}
 			}

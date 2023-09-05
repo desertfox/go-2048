@@ -40,12 +40,12 @@ func (g *Game) IsGameOver() bool {
 
 	for y := 0; y < len(g.Board.tiles); y++ {
 		for x := 0; x < len(g.Board.tiles[y]); x++ {
-			if g.Board.tiles[y][x].Value == 2048 {
+			if g.Board.tiles[y][x] == 2048 {
 				g.State = "win"
 				return true
 			}
 
-			if g.Board.tiles[y][x].Empty {
+			if g.Board.tiles[y][x] == 0 {
 				emptyTiles = true
 			}
 		}

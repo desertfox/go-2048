@@ -1,47 +1,31 @@
 package game
 
-type Tile struct {
-	Value int
-	Empty bool
-}
-
-func NewTile(v int) Tile {
-	var empty bool = true
-	if v != 0 {
-		empty = false
-	}
-	return Tile{
-		Value: v,
-		Empty: empty,
-	}
-}
+type Tile int
 
 func (t *Tile) Double() {
-	t.Value = t.Value * 2
-}
-
-func (t *Tile) Clear() {
-	t.Value = 0
-	t.Empty = true
+	if *t == 0 {
+		*t = 2
+		return
+	}
+	*t = *t * 2
 }
 
 func Flatten(tiles []Tile, direction string) ([]Tile, bool) {
-	var changed bool = false
 	flatStack := RemoveEmpty(tiles)
 
 	switch direction {
 	case "right":
 		for i := len(flatStack) - 1; i > 0; i-- {
-			if flatStack[i].Value == flatStack[i-1].Value {
+			if flatStack[i] == flatStack[i-1] {
 				flatStack[i].Double()
-				flatStack[i-1].Clear()
+				flatStack[i-1] = Tile(0)
 			}
 		}
 	case "left":
 		for i := 0; len(flatStack)-1 > i; i++ {
-			if flatStack[i].Value == flatStack[i+1].Value {
+			if flatStack[i] == flatStack[i+1] {
 				flatStack[i].Double()
-				flatStack[i+1].Clear()
+				flatStack[i+1] = Tile(0)
 			}
 		}
 	}
@@ -50,26 +34,25 @@ func Flatten(tiles []Tile, direction string) ([]Tile, bool) {
 
 	for len(flatStack) < 4 {
 		if direction == "right" {
-			flatStack = append([]Tile{NewTile(0)}, flatStack...)
+			flatStack = append([]Tile{Tile(0)}, flatStack...)
 		} else {
-			flatStack = append(flatStack, NewTile(0))
+			flatStack = append(flatStack, Tile(0))
 		}
 	}
 
 	for i := 0; i < 4; i++ {
 		if tiles[i] != flatStack[i] {
-			changed = true
-			break
+			return flatStack, true
 		}
 	}
 
-	return flatStack, changed
+	return flatStack, false
 }
 
 func RemoveEmpty(tiles []Tile) []Tile {
 	var flatStack []Tile
 	for _, tile := range tiles {
-		if !tile.Empty {
+		if tile != 0 {
 			flatStack = append(flatStack, tile)
 		}
 	}

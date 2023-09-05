@@ -33,7 +33,7 @@ func NewBoard() *Board {
 	for y := 0; y < 4; y++ {
 		tiles[y] = make([]Tile, 4)
 		for x := 0; x < 4; x++ {
-			tiles[y][x] = NewTile(0)
+			tiles[y][x] = Tile(0)
 		}
 	}
 
@@ -46,8 +46,8 @@ func (b *Board) SpawnBlock() {
 	for {
 		y, x := rand.Intn(4), rand.Intn(4)
 
-		if v := b.tiles[y][x]; v.Empty {
-			b.tiles[y][x] = NewTile(2)
+		if v := b.tiles[y][x]; v == 0 {
+			b.tiles[y][x] = Tile(2)
 			break
 		}
 	}
@@ -126,7 +126,7 @@ func (b *Board) String() string {
 
 	for y := 0; y < len(b.tiles); y++ {
 		for x := 0; x < 4; x++ {
-			output += lipgloss.NewStyle().Foreground(colorMap[b.tiles[y][x].Value]).Render(fmt.Sprintf("%4d", b.tiles[y][x].Value))
+			output += lipgloss.NewStyle().Foreground(colorMap[int(b.tiles[y][x])]).Render(fmt.Sprintf("%4d", b.tiles[y][x]))
 		}
 		output += "\n"
 	}

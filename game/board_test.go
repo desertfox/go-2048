@@ -25,18 +25,18 @@ func TestShiftRight(t *testing.T) {
 			name: "shift Right",
 			start: &Board{
 				tiles: [][]Tile{
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
 				},
 			},
 			expect: &Board{
 				tiles: [][]Tile{
-					{NewTile(0), NewTile(0), NewTile(0), NewTile(4)},
-					{NewTile(0), NewTile(0), NewTile(0), NewTile(4)},
-					{NewTile(0), NewTile(0), NewTile(0), NewTile(4)},
-					{NewTile(0), NewTile(0), NewTile(0), NewTile(4)},
+					{Tile(0), Tile(0), Tile(0), Tile(4)},
+					{Tile(0), Tile(0), Tile(0), Tile(4)},
+					{Tile(0), Tile(0), Tile(0), Tile(4)},
+					{Tile(0), Tile(0), Tile(0), Tile(4)},
 				},
 			},
 		},
@@ -44,18 +44,18 @@ func TestShiftRight(t *testing.T) {
 			name: "shift Right merge full",
 			start: &Board{
 				tiles: [][]Tile{
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(4)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(4)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(4)},
-					{NewTile(2), NewTile(2), NewTile(2), NewTile(4)},
+					{Tile(0), Tile(0), Tile(2), Tile(4)},
+					{Tile(0), Tile(0), Tile(2), Tile(4)},
+					{Tile(0), Tile(0), Tile(2), Tile(4)},
+					{Tile(2), Tile(2), Tile(2), Tile(4)},
 				},
 			},
 			expect: &Board{
 				tiles: [][]Tile{
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(4)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(4)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(4)},
-					{NewTile(0), NewTile(2), NewTile(4), NewTile(4)},
+					{Tile(0), Tile(0), Tile(2), Tile(4)},
+					{Tile(0), Tile(0), Tile(2), Tile(4)},
+					{Tile(0), Tile(0), Tile(2), Tile(4)},
+					{Tile(0), Tile(2), Tile(4), Tile(4)},
 				},
 			},
 		},
@@ -63,12 +63,14 @@ func TestShiftRight(t *testing.T) {
 
 	for _, test := range cases {
 		t.Run(test.name, func(t *testing.T) {
+			fmt.Printf("%s\n", test.start)
 			test.start.ShiftRight()
+
+			//fmt.Printf("%s\n", test.start)
 
 			for i := 0; i < len(test.start.tiles)-1; i++ {
 				for j := 0; j < len(test.start.tiles[i])-1; j++ {
-					if test.start.tiles[i][j].Value != test.expect.tiles[i][j].Value {
-						fmt.Printf("%v", test.start)
+					if test.start.tiles[i][j] != test.expect.tiles[i][j] {
 						t.Errorf("start %v, expected %v", test.start.tiles[i][j], test.expect.tiles[i][j])
 					}
 				}
@@ -94,18 +96,18 @@ func TestShiftLeft(t *testing.T) {
 			name: "Shift Left",
 			start: &Board{
 				tiles: [][]Tile{
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
 				},
 			},
 			expect: &Board{
 				tiles: [][]Tile{
-					{NewTile(4), NewTile(0), NewTile(0), NewTile(0)},
-					{NewTile(4), NewTile(0), NewTile(0), NewTile(0)},
-					{NewTile(4), NewTile(0), NewTile(0), NewTile(0)},
-					{NewTile(4), NewTile(0), NewTile(0), NewTile(0)},
+					{Tile(4), Tile(0), Tile(0), Tile(0)},
+					{Tile(4), Tile(0), Tile(0), Tile(0)},
+					{Tile(4), Tile(0), Tile(0), Tile(0)},
+					{Tile(4), Tile(0), Tile(0), Tile(0)},
 				},
 			},
 			changed: true,
@@ -114,18 +116,18 @@ func TestShiftLeft(t *testing.T) {
 			name: "Shift Left No Action",
 			start: &Board{
 				tiles: [][]Tile{
-					{NewTile(2), NewTile(0), NewTile(0), NewTile(0)},
-					{NewTile(2), NewTile(0), NewTile(0), NewTile(0)},
-					{NewTile(2), NewTile(0), NewTile(0), NewTile(0)},
-					{NewTile(2), NewTile(0), NewTile(0), NewTile(0)},
+					{Tile(2), Tile(0), Tile(0), Tile(0)},
+					{Tile(2), Tile(0), Tile(0), Tile(0)},
+					{Tile(2), Tile(0), Tile(0), Tile(0)},
+					{Tile(2), Tile(0), Tile(0), Tile(0)},
 				},
 			},
 			expect: &Board{
 				tiles: [][]Tile{
-					{NewTile(2), NewTile(0), NewTile(0), NewTile(0)},
-					{NewTile(2), NewTile(0), NewTile(0), NewTile(0)},
-					{NewTile(2), NewTile(0), NewTile(0), NewTile(0)},
-					{NewTile(2), NewTile(0), NewTile(0), NewTile(0)},
+					{Tile(2), Tile(0), Tile(0), Tile(0)},
+					{Tile(2), Tile(0), Tile(0), Tile(0)},
+					{Tile(2), Tile(0), Tile(0), Tile(0)},
+					{Tile(2), Tile(0), Tile(0), Tile(0)},
 				},
 			},
 			changed: false,
@@ -134,18 +136,18 @@ func TestShiftLeft(t *testing.T) {
 			name: "Shift Left full merge from left",
 			start: &Board{
 				tiles: [][]Tile{
-					{NewTile(4), NewTile(2), NewTile(2), NewTile(2)},
-					{NewTile(4), NewTile(2), NewTile(2), NewTile(2)},
-					{NewTile(4), NewTile(2), NewTile(2), NewTile(2)},
-					{NewTile(4), NewTile(2), NewTile(2), NewTile(2)},
+					{Tile(4), Tile(2), Tile(2), Tile(2)},
+					{Tile(4), Tile(2), Tile(2), Tile(2)},
+					{Tile(4), Tile(2), Tile(2), Tile(2)},
+					{Tile(4), Tile(2), Tile(2), Tile(2)},
 				},
 			},
 			expect: &Board{
 				tiles: [][]Tile{
-					{NewTile(4), NewTile(4), NewTile(2), NewTile(0)},
-					{NewTile(4), NewTile(4), NewTile(2), NewTile(0)},
-					{NewTile(4), NewTile(4), NewTile(2), NewTile(0)},
-					{NewTile(4), NewTile(4), NewTile(2), NewTile(0)},
+					{Tile(4), Tile(4), Tile(2), Tile(0)},
+					{Tile(4), Tile(4), Tile(2), Tile(0)},
+					{Tile(4), Tile(4), Tile(2), Tile(0)},
+					{Tile(4), Tile(4), Tile(2), Tile(0)},
 				},
 			},
 			changed: true,
@@ -158,8 +160,7 @@ func TestShiftLeft(t *testing.T) {
 
 			for i := 0; i < len(test.start.tiles)-1; i++ {
 				for j := 0; j < len(test.start.tiles[i])-1; j++ {
-					if test.start.tiles[i][j].Value != test.expect.tiles[i][j].Value {
-						//fmt.Printf("%v", test.start)
+					if test.start.tiles[i][j] != test.expect.tiles[i][j] {
 						t.Errorf("start %v, expected %v", test.start.tiles[i][j], test.expect.tiles[i][j])
 					}
 				}
@@ -187,18 +188,18 @@ func TestShiftUp(t *testing.T) {
 			name: "Shift Up",
 			start: &Board{
 				tiles: [][]Tile{
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
 				},
 			},
 			expect: &Board{
 				tiles: [][]Tile{
-					{NewTile(0), NewTile(0), NewTile(4), NewTile(4)},
-					{NewTile(0), NewTile(0), NewTile(4), NewTile(4)},
-					{NewTile(0), NewTile(0), NewTile(0), NewTile(0)},
-					{NewTile(0), NewTile(0), NewTile(0), NewTile(0)},
+					{Tile(0), Tile(0), Tile(4), Tile(4)},
+					{Tile(0), Tile(0), Tile(4), Tile(4)},
+					{Tile(0), Tile(0), Tile(0), Tile(0)},
+					{Tile(0), Tile(0), Tile(0), Tile(0)},
 				},
 			},
 		},
@@ -206,18 +207,18 @@ func TestShiftUp(t *testing.T) {
 			name: "Shift Up merge full",
 			start: &Board{
 				tiles: [][]Tile{
-					{NewTile(0), NewTile(0), NewTile(4), NewTile(4)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
+					{Tile(0), Tile(0), Tile(4), Tile(4)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
 				},
 			},
 			expect: &Board{
 				tiles: [][]Tile{
-					{NewTile(0), NewTile(0), NewTile(4), NewTile(4)},
-					{NewTile(0), NewTile(0), NewTile(4), NewTile(4)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(0), NewTile(0)},
+					{Tile(0), Tile(0), Tile(4), Tile(4)},
+					{Tile(0), Tile(0), Tile(4), Tile(4)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(0), Tile(0)},
 				},
 			},
 		},
@@ -229,7 +230,7 @@ func TestShiftUp(t *testing.T) {
 
 			for i := 0; i < len(test.start.tiles)-1; i++ {
 				for j := 0; j < len(test.start.tiles[i])-1; j++ {
-					if test.start.tiles[i][j].Value != test.expect.tiles[i][j].Value {
+					if test.start.tiles[i][j] != test.expect.tiles[i][j] {
 						fmt.Printf("%v", test.start)
 						t.Errorf("start %v, expected %v", test.start.tiles[i][j], test.expect.tiles[i][j])
 					}
@@ -254,18 +255,18 @@ func TestShiftDown(t *testing.T) {
 			name: "Shift Down",
 			start: &Board{
 				tiles: [][]Tile{
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
 				},
 			},
 			expect: &Board{
 				tiles: [][]Tile{
-					{NewTile(0), NewTile(0), NewTile(0), NewTile(0)},
-					{NewTile(0), NewTile(0), NewTile(0), NewTile(0)},
-					{NewTile(0), NewTile(0), NewTile(4), NewTile(4)},
-					{NewTile(0), NewTile(0), NewTile(4), NewTile(4)},
+					{Tile(0), Tile(0), Tile(0), Tile(0)},
+					{Tile(0), Tile(0), Tile(0), Tile(0)},
+					{Tile(0), Tile(0), Tile(4), Tile(4)},
+					{Tile(0), Tile(0), Tile(4), Tile(4)},
 				},
 			},
 		},
@@ -273,18 +274,18 @@ func TestShiftDown(t *testing.T) {
 			name: "Shift Down full merge down",
 			start: &Board{
 				tiles: [][]Tile{
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(4), NewTile(4)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(4), Tile(4)},
 				},
 			},
 			expect: &Board{
 				tiles: [][]Tile{
-					{NewTile(0), NewTile(0), NewTile(0), NewTile(0)},
-					{NewTile(0), NewTile(0), NewTile(2), NewTile(2)},
-					{NewTile(0), NewTile(0), NewTile(4), NewTile(4)},
-					{NewTile(0), NewTile(0), NewTile(4), NewTile(4)},
+					{Tile(0), Tile(0), Tile(0), Tile(0)},
+					{Tile(0), Tile(0), Tile(2), Tile(2)},
+					{Tile(0), Tile(0), Tile(4), Tile(4)},
+					{Tile(0), Tile(0), Tile(4), Tile(4)},
 				},
 			},
 		},
@@ -295,7 +296,7 @@ func TestShiftDown(t *testing.T) {
 			test.start.ShiftDown()
 			for i := 0; i < len(test.start.tiles)-1; i++ {
 				for j := 0; j < len(test.start.tiles[i])-1; j++ {
-					if test.start.tiles[i][j].Value != test.expect.tiles[i][j].Value {
+					if test.start.tiles[i][j] != test.expect.tiles[i][j] {
 						t.Errorf("start %v, expected %v", test.start.tiles[i][j], test.expect.tiles[i][j])
 					}
 				}
