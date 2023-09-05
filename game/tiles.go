@@ -56,14 +56,12 @@ func Flatten(tiles []Tile, direction string) ([]Tile, bool) {
 		}
 	}
 
-	for i := 0; i < len(tiles)-1; i++ {
+	for i := 0; i < 4; i++ {
 		if tiles[i] != flatStack[i] {
 			changed = true
 			break
 		}
 	}
-
-	//slog.Info("flatten", "changed", changed, "tiles", fmt.Sprintf("%v", tiles), "flatstack", fmt.Sprintf("%v", flatStack))
 
 	return flatStack, changed
 }
