@@ -46,7 +46,7 @@ func (b *Board) SpawnBlock() {
 	for {
 		y, x := rand.Intn(4), rand.Intn(4)
 
-		if v := b.tiles[y][x]; v.empty {
+		if v := b.tiles[y][x]; v.Empty {
 			b.tiles[y][x] = NewTile(2)
 			break
 		}

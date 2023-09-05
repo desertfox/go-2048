@@ -40,6 +40,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
+	if m.game.State != "playing" {
+		return m.game.State
+	}
 	return m.game.BoardString()
 }
 

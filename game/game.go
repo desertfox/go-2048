@@ -2,12 +2,14 @@ package game
 
 type Game struct {
 	Board *Board
+	State string
 }
 
 type Action string
 
 func (g *Game) Start() {
 	g.Board = NewBoard()
+	g.State = "playing"
 	g.Board.SpawnBlock()
 }
 
@@ -24,11 +26,39 @@ func (g *Game) ProcessAction(move Action) {
 		changed = g.Board.ShiftUp()
 	}
 
+	if g.IsGameOver() {
+		return
+	}
+
 	if changed {
 		g.Board.SpawnBlock()
 	}
 }
 
-func (g *Game) BoardString() string {
+func (g *Game) IsGameOver() bool {
+	var emptyTiles bool = false
+
+	for y := 0; y < len(g.Board.tiles); y++ {
+		for x := 0; x < len(g.Board.tiles[y]); x++ {
+			if g.Board.tiles[y][x].Value == 2048 {
+				g.State = "win"
+				return true
+			}
+
+			if g.Board.tiles[y][x].Empty {
+				emptyTiles = true
+			}
+		}
+	}
+
+	if !emptyTiles {
+		g.State = "lose"
+		return true
+	}
+
+	return false
+}
+
+func (g Game) BoardString() string {
 	return g.Board.String()
 }

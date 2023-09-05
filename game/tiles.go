@@ -2,7 +2,7 @@ package game
 
 type Tile struct {
 	Value int
-	empty bool
+	Empty bool
 }
 
 func NewTile(v int) Tile {
@@ -12,7 +12,7 @@ func NewTile(v int) Tile {
 	}
 	return Tile{
 		Value: v,
-		empty: empty,
+		Empty: empty,
 	}
 }
 
@@ -20,9 +20,9 @@ func (t *Tile) Double() {
 	t.Value = t.Value * 2
 }
 
-func (t *Tile) Empty() {
+func (t *Tile) Clear() {
 	t.Value = 0
-	t.empty = true
+	t.Empty = true
 }
 
 func Flatten(tiles []Tile, direction string) ([]Tile, bool) {
@@ -34,14 +34,14 @@ func Flatten(tiles []Tile, direction string) ([]Tile, bool) {
 		for i := len(flatStack) - 1; i > 0; i-- {
 			if flatStack[i].Value == flatStack[i-1].Value {
 				flatStack[i].Double()
-				flatStack[i-1] = NewTile(0)
+				flatStack[i-1].Clear()
 			}
 		}
 	case "left":
 		for i := 0; len(flatStack)-1 > i; i++ {
 			if flatStack[i].Value == flatStack[i+1].Value {
 				flatStack[i].Double()
-				flatStack[i+1] = NewTile(0)
+				flatStack[i+1].Clear()
 			}
 		}
 	}
@@ -69,7 +69,7 @@ func Flatten(tiles []Tile, direction string) ([]Tile, bool) {
 func RemoveEmpty(tiles []Tile) []Tile {
 	var flatStack []Tile
 	for _, tile := range tiles {
-		if !tile.empty {
+		if !tile.Empty {
 			flatStack = append(flatStack, tile)
 		}
 	}
