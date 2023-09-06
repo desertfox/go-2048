@@ -24,40 +24,36 @@ var (
 	}
 )
 
-type Board struct {
-	tiles [][]Tile
-}
+type Board []TileRow
 
-func NewBoard() *Board {
-	var tiles [][]Tile = make([][]Tile, 4)
+func NewBoard() Board {
+	var board Board = make(Board, 4)
 	for y := 0; y < 4; y++ {
-		tiles[y] = make([]Tile, 4)
+		board[y] = make(TileRow, 4)
 		for x := 0; x < 4; x++ {
-			tiles[y][x] = Tile(0)
+			board[y][x] = Tile(0)
 		}
 	}
 
-	return &Board{
-		tiles: tiles,
-	}
+	return board
 }
 
-func (b *Board) SpawnBlock() {
+func (b Board) SpawnBlock() {
 	for {
 		y, x := rand.Intn(4), rand.Intn(4)
 
-		if v := b.tiles[y][x]; v == 0 {
-			b.tiles[y][x] = Tile(2)
+		if v := b[y][x]; v == 0 {
+			b[y][x] = Tile(2)
 			break
 		}
 	}
 }
 
-func (b *Board) ShiftRight() bool {
+func (b Board) ShiftRight() bool {
 	var changedBoard bool
 	for y := 0; y < 4; y++ {
 		var changedRow bool
-		b.tiles[y], changedRow = Flatten(b.tiles[y], "right")
+		b[y], changedRow = Flatten(b[y], "right")
 		if changedRow {
 			changedBoard = true
 		}
@@ -66,11 +62,11 @@ func (b *Board) ShiftRight() bool {
 	return changedBoard
 }
 
-func (b *Board) ShiftLeft() bool {
+func (b Board) ShiftLeft() bool {
 	var changedBoard bool
 	for y := 0; y < 4; y++ {
 		var changedRow bool
-		b.tiles[y], changedRow = Flatten(b.tiles[y], "left")
+		b[y], changedRow = Flatten(b[y], "left")
 		if changedRow {
 			changedBoard = true
 		}
@@ -78,55 +74,57 @@ func (b *Board) ShiftLeft() bool {
 	return changedBoard
 }
 
-func (b *Board) ShiftUp() bool {
+func (b Board) ShiftUp() bool {
 	var changedBoard bool
 	for x := 0; x < 4; x++ {
 		var (
-			tiles      []Tile = make([]Tile, 4)
+			tileRow    TileRow = b.getColumn(x)
 			changedRow bool
 		)
-		for y := 0; y < 4; y++ {
-			tiles[y] = b.tiles[y][x]
-		}
-		tiles, changedRow = Flatten(tiles, "left")
+		tileRow, changedRow = Flatten(tileRow, "left")
 		if changedRow {
 			changedBoard = true
 		}
 
-		for y := 0; y < len(b.tiles); y++ {
-			b.tiles[y][x] = tiles[y]
+		for y := 0; y < len(b); y++ {
+			b[y][x] = tileRow[y]
 		}
 	}
 	return changedBoard
 }
 
-func (b *Board) ShiftDown() bool {
+func (b Board) ShiftDown() bool {
 	var changedBoard bool
 	for x := 0; x < 4; x++ {
 		var (
-			tiles      []Tile = make([]Tile, 4)
+			tileRow    TileRow = b.getColumn(x)
 			changedRow bool
 		)
-		for y := 0; y < 4; y++ {
-			tiles[y] = b.tiles[y][x]
-		}
-		tiles, changedRow = Flatten(tiles, "right")
+		tileRow, changedRow = Flatten(tileRow, "right")
 		if changedRow {
 			changedBoard = true
 		}
-		for y := 0; y < len(b.tiles); y++ {
-			b.tiles[y][x] = tiles[y]
+		for y := 0; y < len(b); y++ {
+			b[y][x] = tileRow[y]
 		}
 	}
 	return changedBoard
 }
 
-func (b *Board) String() string {
+func (b Board) getColumn(col int) TileRow {
+	var tileColumn TileRow
+	for y := 0; y < 4; y++ {
+		tileColumn = append(tileColumn, b[y][col])
+	}
+	return tileColumn
+}
+
+func (b Board) String() string {
 	var output string
 
-	for y := 0; y < len(b.tiles); y++ {
+	for y := 0; y < len(b); y++ {
 		for x := 0; x < 4; x++ {
-			output += lipgloss.NewStyle().Foreground(colorMap[int(b.tiles[y][x])]).Render(fmt.Sprintf("%5d", b.tiles[y][x]))
+			output += lipgloss.NewStyle().Foreground(colorMap[int(b[y][x])]).Render(fmt.Sprintf("%5d", b[y][x]))
 		}
 		output += "\n"
 	}

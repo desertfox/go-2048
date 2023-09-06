@@ -1,7 +1,7 @@
 package game
 
 type Game struct {
-	Board *Board
+	Board Board
 	State string
 }
 
@@ -38,14 +38,14 @@ func (g *Game) ProcessAction(move Action) {
 func (g *Game) IsGameOver() bool {
 	var emptyTiles bool = false
 
-	for y := 0; y < len(g.Board.tiles); y++ {
-		for x := 0; x < len(g.Board.tiles[y]); x++ {
-			if g.Board.tiles[y][x] == 2048 {
+	for y := 0; y < len(g.Board); y++ {
+		for x := 0; x < len(g.Board[y]); x++ {
+			if g.Board[y][x] == 2048 {
 				g.State = "win"
 				return true
 			}
 
-			if g.Board.tiles[y][x] == 0 {
+			if g.Board[y][x] == 0 {
 				emptyTiles = true
 			}
 		}

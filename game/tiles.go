@@ -2,6 +2,8 @@ package game
 
 type Tile int
 
+type TileRow []Tile
+
 func (t *Tile) Double() {
 	if *t == 0 {
 		*t = 2
@@ -10,8 +12,8 @@ func (t *Tile) Double() {
 	*t = *t * 2
 }
 
-func Flatten(tiles []Tile, direction string) ([]Tile, bool) {
-	flatStack := RemoveEmpty(tiles)
+func Flatten(tileRow TileRow, direction string) (TileRow, bool) {
+	flatStack := RemoveEmpty(tileRow)
 
 	switch direction {
 	case "right":
@@ -34,14 +36,14 @@ func Flatten(tiles []Tile, direction string) ([]Tile, bool) {
 
 	for len(flatStack) < 4 {
 		if direction == "right" {
-			flatStack = append([]Tile{Tile(0)}, flatStack...)
+			flatStack = append(TileRow([]Tile{Tile(0)}), flatStack...)
 		} else {
 			flatStack = append(flatStack, Tile(0))
 		}
 	}
 
 	for i := 0; i < 4; i++ {
-		if tiles[i] != flatStack[i] {
+		if tileRow[i] != flatStack[i] {
 			return flatStack, true
 		}
 	}
@@ -49,9 +51,9 @@ func Flatten(tiles []Tile, direction string) ([]Tile, bool) {
 	return flatStack, false
 }
 
-func RemoveEmpty(tiles []Tile) []Tile {
-	var flatStack []Tile
-	for _, tile := range tiles {
+func RemoveEmpty(tileRow TileRow) TileRow {
+	var flatStack TileRow
+	for _, tile := range tileRow {
 		if tile != 0 {
 			flatStack = append(flatStack, tile)
 		}
