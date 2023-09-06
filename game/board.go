@@ -126,7 +126,7 @@ func (b *Board) String() string {
 
 	for y := 0; y < len(b.tiles); y++ {
 		for x := 0; x < 4; x++ {
-			output += lipgloss.NewStyle().Foreground(colorMap[int(b.tiles[y][x])]).Render(fmt.Sprintf("%4d", b.tiles[y][x]))
+			output += lipgloss.NewStyle().Foreground(colorMap[int(b.tiles[y][x])]).Render(fmt.Sprintf("%5d", b.tiles[y][x]))
 		}
 		output += "\n"
 	}
